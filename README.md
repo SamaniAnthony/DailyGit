@@ -40,8 +40,8 @@ After years of on-and-off learning, I’ve realized that consistent, deliberate 
 
 ---
 
-## 🗓️ Started: 2025-10-01`  
+## 🗓️ Started: 2025-10-01
 
 ---
 
-Thanks for stopping by. Feel free to explore my commits, leave feedback, or share your own journey.
+Thanks for stopping by. Feel free to explore my commits, leave feedback, or share your own journey. I would love to connect! 
