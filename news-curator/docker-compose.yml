@@ -1,0 +1,40 @@
+
+
+services:
+  news-curator:
+    build: .
+    container_name: news-curator
+    ports:
+      - "8080:8080"
+    volumes:
+      # Persist database and logs
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - TZ=America/New_York
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Cron job container for scheduled fetching
+  news-curator-cron:
+    build: .
+    container_name: news-curator-cron
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./crontab:/etc/cron.d/news-curator-cron
+    command: >
+      sh -c "
+      apt-get update &&
+      apt-get install -y cron curl &&
+      crontab /etc/cron.d/news-curator-cron &&
+      cron -f
+      "
+    depends_on:
+      - news-curator
+    restart: unless-stopped

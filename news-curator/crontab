@@ -1,0 +1,11 @@
+# News Curator Cron Jobs
+# Format: minute hour day month weekday command
+
+# Fetch feeds every hour
+0 * * * * curl -X POST http://news-curator:8080/api/fetch >> /app/logs/cron.log 2>&1
+
+# Cleanup old articles weekly (Sundays at 2 AM)
+0 2 * * 0 curl -X DELETE http://news-curator:8080/api/articles/cleanup?days=30 >> /app/logs/cron.log 2>&1
+
+# Keep container alive
+* * * * * echo "Cron is running: $(date)" >> /app/logs/cron-heartbeat.log

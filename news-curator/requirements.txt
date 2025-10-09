@@ -1,0 +1,20 @@
+# FastAPI and Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+jinja2==3.1.2
+python-multipart==0.0.6
+
+# HTTP and Web Scraping
+requests==2.31.0
+feedparser==6.0.10
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# Optional: Advanced article extraction
+# newspaper3k==0.2.8
+
+# Database
+# SQLite is built into Python, no extra package needed
+
+# Utilities
+python-dateutil==2.8.2

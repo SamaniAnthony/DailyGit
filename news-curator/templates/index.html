@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Curator - Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">📰 News Curator</h1>
+            <div class="nav-actions">
+                <button onclick="fetchFeeds()" class="btn btn-primary">Refresh Feeds</button>
+                <button onclick="showSettings()" class="btn btn-secondary">Settings</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.total_articles }}</div>
+                <div class="stat-label">Total Articles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.unread_articles }}</div>
+                <div class="stat-label">Unread</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.starred_articles }}</div>
+                <div class="stat-label">Starred</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.active_sources }}</div>
+                <div class="stat-label">Active Sources</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-group">
+                <label>Category:</label>
+                <select id="categoryFilter" onchange="applyFilters()">
+                    <option value="">All</option>
+                    <option value="tech">Tech</option>
+                    <option value="ai">AI</option>
+                    <option value="finance">Finance</option>
+                    <option value="webdev">Web Dev</option>
+                    <option value="design">Design</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Source:</label>
+                <select id="sourceFilter" onchange="applyFilters()">
+                    <option value="">All Sources</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>
+                    <input type="checkbox" id="unreadFilter" onchange="applyFilters()">
+                    Unread Only
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <label>
+                    <input type="checkbox" id="starredFilter" onchange="applyFilters()">
+                    Starred Only
+                </label>
+            </div>
+
+            <div class="filter-group search-group">
+                <input type="text" id="searchInput" placeholder="Search articles..." onkeyup="handleSearch()">
+            </div>
+        </div>
+
+        <!-- Articles List -->
+        <div id="articlesList" class="articles-list">
+            <div class="loading">Loading articles...</div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination">
+            <!-- Pagination buttons will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Modal for Settings -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSettings()">&times;</span>
+            <h2>Settings</h2>
+
+            <div class="settings-section">
+                <h3>Sources</h3>
+                <div id="sourcesList"></div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Add New Source</h3>
+                <form id="addSourceForm" onsubmit="addSource(event)">
+                    <input type="text" id="sourceName" placeholder="Source Name" required>
+                    <input type="url" id="sourceUrl" placeholder="Website URL" required>
+                    <input type="url" id="sourceFeedUrl" placeholder="RSS Feed URL" required>
+                    <select id="sourceCategory">
+                        <option value="tech">Tech</option>
+                        <option value="ai">AI</option>
+                        <option value="finance">Finance</option>
+                        <option value="webdev">Web Dev</option>
+                        <option value="design">Design</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Add Source</button>
+                </form>
+            </div>
+
+            <div class="settings-section">
+                <h3>Maintenance</h3>
+                <button onclick="cleanupOldArticles()" class="btn btn-secondary">
+                    Delete Articles Older Than 30 Days
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

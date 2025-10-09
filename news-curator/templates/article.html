@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }} - News Curator</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">📰 News Curator</a>
+            <div class="nav-actions">
+                <button onclick="window.history.back()" class="btn btn-secondary">← Back</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <article class="article-detail">
+            <header class="article-header">
+                {% if article.image_url %}
+                <img src="{{ article.image_url }}" alt="{{ article.title }}" class="article-image">
+                {% endif %}
+
+                <h1 class="article-title">{{ article.title }}</h1>
+
+                <div class="article-meta">
+                    <span class="meta-item">
+                        <strong>Source:</strong> {{ article.source_name }}
+                    </span>
+                    {% if article.author %}
+                    <span class="meta-item">
+                        <strong>By:</strong> {{ article.author }}
+                    </span>
+                    {% endif %}
+                    {% if article.published_date %}
+                    <span class="meta-item">
+                        <strong>Published:</strong> {{ article.published_date[:10] }}
+                    </span>
+                    {% endif %}
+                    {% if article.category %}
+                    <span class="category-badge">{{ article.category }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="article-actions">
+                    <button onclick="toggleStar({{ article.id }})" id="starBtn" class="btn btn-secondary">
+                        {% if article.is_starred %}★ Starred{% else %}☆ Star{% endif %}
+                    </button>
+                    <a href="{{ article.url }}" target="_blank" class="btn btn-primary">
+                        Read Original →
+                    </a>
+                </div>
+            </header>
+
+            <div class="article-content">
+                {% if article.content %}
+                    <div class="content-text">{{ article.content }}</div>
+                {% else %}
+                    <div class="content-summary">
+                        <p>{{ article.summary }}</p>
+                        <p><a href="{{ article.url }}" target="_blank">Read full article →</a></p>
+                    </div>
+                {% endif %}
+            </div>
+        </article>
+    </div>
+
+    <script>
+        async function toggleStar(articleId) {
+            try {
+                const response = await fetch(`/api/article/${articleId}/star`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                const btn = document.getElementById('starBtn');
+                if (data.is_starred) {
+                    btn.textContent = '★ Starred';
+                } else {
+                    btn.textContent = '☆ Star';
+                }
+            } catch (error) {
+                console.error('Error toggling star:', error);
+            }
+        }
+    </script>
+</body>
+</html>
