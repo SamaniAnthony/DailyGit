@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Portfolio Website",
+    "description": "A minimalist portfolio website built with vanilla HTML, CSS, and JavaScript. Features a blog with Markdown support and a projects showcase.",
+    "tech": "HTML, CSS, JavaScript, Markdown",
+    "github": "https://github.com/yourusername/portfolio",
+    "demo": "https://yourusername.github.io/portfolio"
+  },
+  {
+    "name": "Task Management App",
+    "description": "A simple task management application with local storage persistence. Users can create, edit, and delete tasks with due dates.",
+    "tech": "JavaScript, LocalStorage, CSS Grid",
+    "github": "https://github.com/yourusername/task-app"
+  },
+  {
+    "name": "Weather Dashboard",
+    "description": "Real-time weather dashboard that fetches data from a public API and displays current conditions and forecasts with a clean interface.",
+    "tech": "JavaScript, REST API, Chart.js",
+    "github": "https://github.com/yourusername/weather-dashboard",
+    "demo": "https://yourusername.github.io/weather-dashboard"
+  }
+]

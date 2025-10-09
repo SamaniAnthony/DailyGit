@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read the latest articles on AI, automation, and web development">
+    <meta name="author" content="Anthony Samani">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Blog Post Specific Styles */
+        .blog-post {
+            padding: var(--spacing-3xl) var(--container-padding);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-post-header {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .blog-post-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .blog-post-meta {
+            color: var(--color-gray-500);
+            font-size: 0.95rem;
+        }
+
+        .blog-post-content {
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        .blog-post-content h2 {
+            margin-top: var(--spacing-xl);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.75rem;
+        }
+
+        .blog-post-content h3 {
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.375rem;
+        }
+
+        .blog-post-content p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .blog-post-content ul,
+        .blog-post-content ol {
+            margin-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .blog-post-content li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .blog-post-content code {
+            background-color: var(--color-gray-100);
+            padding: 0.125rem 0.375rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9em;
+            font-family: 'Monaco', 'Courier New', monospace;
+            color: var(--color-gray-800);
+        }
+
+        .blog-post-content pre {
+            background-color: var(--color-gray-100);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .blog-post-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .blog-post-content blockquote {
+            border-left: 4px solid var(--color-gray-300);
+            padding-left: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            color: var(--color-gray-600);
+            font-style: italic;
+        }
+
+        .blog-post-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-md) 0;
+        }
+
+        .blog-post-content table th,
+        .blog-post-content table td {
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-gray-200);
+            text-align: left;
+        }
+
+        .blog-post-content table th {
+            background-color: var(--color-gray-100);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-gray-600);
+            transition: color var(--transition-base);
+        }
+
+        .back-link:hover {
+            color: var(--color-black);
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--spacing-3xl) 0;
+            color: var(--color-gray-500);
+        }
+
+        .error {
+            text-align: center;
+            padding: var(--spacing-3xl) var(--container-padding);
+            color: var(--color-gray-600);
+        }
+    </style>
+
+    <title>Blog Post - Anthony Samani</title>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="Home">AS</a>
+            <div class="nav-links">
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#projects" class="nav-link">Projects</a>
+                <a href="index.html#blog" class="nav-link">Blog</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Post -->
+    <article class="blog-post">
+        <a href="index.html#blog" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Back to Blog
+        </a>
+
+        <div id="post-container">
+            <div class="loading">Loading post...</div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Anthony Samani. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script>
+        // Get slug from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        // Set current year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Load and render blog post
+        async function loadBlogPost() {
+            const container = document.getElementById('post-container');
+
+            if (!slug) {
+                container.innerHTML = '<div class="error">No blog post specified.</div>';
+                return;
+            }
+
+            try {
+                // Load the markdown file
+                const response = await fetch(`blog/${slug}.md`);
+                if (!response.ok) throw new Error('Post not found');
+
+                const markdown = await response.text();
+
+                // Load post metadata
+                const metaResponse = await fetch('blog/posts.json');
+                const posts = await metaResponse.json();
+                const postMeta = posts.find(p => p.slug === slug);
+
+                // Parse markdown to HTML
+                const html = marked.parse(markdown);
+
+                // Set page title
+                if (postMeta) {
+                    document.title = `${postMeta.title} - Anthony Samani`;
+                }
+
+                // Render post
+                container.innerHTML = `
+                    <header class="blog-post-header">
+                        <h1 class="blog-post-title">${postMeta ? postMeta.title : 'Blog Post'}</h1>
+                        ${postMeta ? `<p class="blog-post-meta">${formatDate(postMeta.date)}</p>` : ''}
+                    </header>
+                    <div class="blog-post-content">
+                        ${html}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading blog post:', error);
+                container.innerHTML = `
+                    <div class="error">
+                        <h2>Post Not Found</h2>
+                        <p>Sorry, we couldn't find the blog post you're looking for.</p>
+                        <p><a href="index.html#blog" class="btn btn-primary" style="margin-top: 1rem;">Back to Blog</a></p>
+                    </div>
+                `;
+            }
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Initialize
+        loadBlogPost();
+    </script>
+</body>
+</html>
